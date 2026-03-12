@@ -4,7 +4,7 @@
 // @description  AB站背景更改油猴脚本第三代，重构架构，优化UI/性能/兼容性，支持远程图库接口。
 // @icon         http://github.smiku.site/sakura.png
 // @license      MIT
-// @version      3.1.0
+// @version      3.0.0
 // @author       SakuraMikku
 // @copyright    2023-2099, SakuraMikku
 // @bilibili     https://space.bilibili.com/29058270

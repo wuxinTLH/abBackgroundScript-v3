@@ -50,7 +50,7 @@
 1. 安装 [Tampermonkey](https://www.tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/)
 2. 点击下方链接安装脚本：
 
-   **[📥 点击安装（GreasyFork）](https://greasyfork.org/)**
+   **[📥 点击安装（GreasyFork）](https://greasyfork.org/zh-CN/scripts/569405-ab%E7%AB%99%E7%BD%91%E9%A1%B5%E8%83%8C%E6%99%AF%E6%9B%B4%E6%94%B9-v3)**
 
    或手动将 `abBackgroundScript_v3.js` 添加至油猴管理器。
 
