@@ -1,0 +1,13 @@
+.log
+*.log
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.tif
+*.psd
+*.raw
+*.cr2
+*.nef
