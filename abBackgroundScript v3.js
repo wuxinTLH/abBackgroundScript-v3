@@ -4,12 +4,12 @@
 // @description  AB站背景更改油猴脚本第三代，重构架构，优化UI/性能/兼容性，支持远程图库接口。
 // @icon         http://github.smiku.site/sakura.png
 // @license      MIT
-// @version      3.0.0
+// @version      3.1.0
 // @author       SakuraMikku
 // @copyright    2023-2099, SakuraMikku
 // @bilibili     https://space.bilibili.com/29058270
 // @github       https://github.com/wuxinTLH
-// @updateURL    https://github.com/wuxinTLH/abBackgroundScript-v3/blob/master/abBackgroundScript%20v3.js
+// @updateURL    https://github.com/wuxinTLH/abBackgroundScript/raw/main/abBackgroundScript.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // @match        *www.bilibili.com/*
@@ -61,12 +61,12 @@
 
     // 本地默认图库 —— 扩展至 6 张
     var DEFAULT_GALLERY = [
-        { url: "https://img2.imgtp.com/2024/04/19/36tGMJgW.png", title: "默认 1" },
-        { url: "https://img2.imgtp.com/2024/04/19/1lWtTop9.png", title: "默认 2" },
-        { url: "https://img2.imgtp.com/2024/04/19/JffVHaEc.png", title: "默认 3" },
-        { url: "https://img2.imgtp.com/2024/04/19/BipHyk4y.png", title: "默认 4" },
-        { url: "https://img2.imgtp.com/2024/04/19/sakura5.png", title: "默认 5" },
-        { url: "https://img2.imgtp.com/2024/04/19/sakura6.png", title: "默认 6" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b27894a3fb9.webp", title: "默认 1" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b27895c9ace.webp", title: "默认 2" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b2789652dda.webp", title: "默认 3" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b27896690ce.webp", title: "默认 4" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b2789672e0f.webp", title: "默认 5" },
+        { url: "https://picui.ogmua.cn/s1/2026/03/12/69b2789d06cea.webp", title: "默认 6" },
     ];
 
     // 作者信息
@@ -446,14 +446,45 @@
 
         // ---- CSS ----
         var CSS = [
-            // 主触发按钮
-            "#skbg-trigger{position:fixed;bottom:32px;left:0;z-index:2147483647;",
-            "width:44px;height:86px;background:linear-gradient(180deg,#ff6eb4,#ff9de2);",
-            "border-radius:0 22px 22px 0;display:flex;align-items:center;justify-content:center;",
-            "cursor:pointer;box-shadow:3px 3px 14px rgba(255,110,180,.45);",
-            "transition:width .22s cubic-bezier(.4,0,.2,1),box-shadow .2s;overflow:hidden;user-select:none;}",
-            "#skbg-trigger:hover{width:56px;box-shadow:4px 4px 20px rgba(255,110,180,.65);}",
-            "#skbg-trigger-icon{font-size:24px;pointer-events:none;}",
+            // 主触发按钮 —— 平时缩进贴边，鼠标靠近时滑出，不遮挡页面内容
+            // 触发热区（透明，贴左边缘，捕捉鼠标接近）
+            "#skbg-hot{position:fixed;bottom:0;left:0;z-index:2147483646;",
+            "width:12px;height:100vh;pointer-events:auto;}",
+
+            // 可见按钮本体：默认向左收起，仅露出 4px 细边
+            "#skbg-trigger{position:fixed;bottom:120px;left:0;z-index:2147483647;",
+            "width:42px;height:80px;",
+            "background:linear-gradient(160deg,#ff6eb4 0%,#ff9de2 100%);",
+            "border-radius:0 20px 20px 0;",
+            "display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;",
+            "cursor:pointer;user-select:none;",
+            "box-shadow:2px 2px 10px rgba(255,110,180,.35);",
+            // 默认：整体左移，仅留 4px 可见作为「存在感」细线
+            "transform:translateX(calc(-100% + 4px));",
+            "transition:transform .28s cubic-bezier(.4,0,.2,1),",
+            "           box-shadow .22s,",
+            "           opacity .22s;",
+            "opacity:.75;}",
+
+            // 热区 hover 时，或按钮自身 hover/focus 时：完全滑出
+            "#skbg-hot:hover ~ #skbg-trigger,",
+            "#skbg-trigger:hover,",
+            "#skbg-trigger:focus-visible,",
+            "#skbg-trigger.peeked{",
+            "  transform:translateX(0);",
+            "  opacity:1;",
+            "  box-shadow:3px 3px 16px rgba(255,110,180,.55);}",
+
+            // 面板打开时：按钮完全收起隐藏，不遮挡面板内容
+            "#skbg-trigger.panel-open{",
+            "transform:translateX(-100%) !important;",
+            "opacity:0 !important;",
+            "pointer-events:none !important;}",
+
+            "#skbg-trigger-icon{font-size:20px;pointer-events:none;line-height:1;}",
+            "#skbg-trigger-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.9);",
+            "pointer-events:none;letter-spacing:.5px;writing-mode:vertical-rl;",
+            "text-orientation:mixed;line-height:1;}",
 
             // 主面板
             "#skbg-panel{position:fixed;bottom:0;left:0;z-index:2147483646;width:390px;max-height:92vh;",
@@ -704,9 +735,12 @@
             var wrapper = document.createElement("div");
             wrapper.id = "skbg-root";
             wrapper.innerHTML = [
-                // 触发按钮
+                // 透明热区（贴左边缘，鼠标靠近时通过 CSS 相邻选择器触发按钮滑出）
+                '<div id="skbg-hot" aria-hidden="true"></div>',
+                // 触发按钮（默认收起至 left 边缘只露 4px）
                 '<div id="skbg-trigger" role="button" tabindex="0" aria-label="打开背景面板" title="更换背景">',
                 '  <span id="skbg-trigger-icon">🌸</span>',
+                '  <span id="skbg-trigger-label">背景</span>',
                 '</div>',
 
                 // 面板
@@ -793,20 +827,33 @@
 
         // ---- 绑定事件 ----
         function bindEvents() {
-            // 触发按钮（同时支持键盘回车）
+            // 触发按钮（同时支持键盘回车/空格）
             var trigger = $id("skbg-trigger");
+            var panel = $id("skbg-panel");
+
+            var hot = $id("skbg-hot");
+
+            /** 面板打开：按钮淡出收起，热区禁用；面板关闭：按钮恢复，热区恢复 */
+            function setPanelOpen(isOpen) {
+                _open = isOpen;
+                panel.classList.toggle("open", isOpen);
+                trigger.classList.toggle("panel-open", isOpen);
+                // 热区：面板开着时不响应 hover，避免按钮意外弹出
+                if (hot) hot.style.pointerEvents = isOpen ? "none" : "auto";
+            }
+
             function togglePanel() {
-                _open = !_open;
-                $id("skbg-panel").classList.toggle("open", _open);
+                setPanelOpen(!_open);
                 if (_open && !_galleryLoaded) renderGallery(false);
             }
             trigger.addEventListener("click", togglePanel);
-            trigger.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") togglePanel(); });
+            trigger.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); togglePanel(); }
+            });
 
-            // 关闭
+            // 关闭按钮
             $id("skbg-close").addEventListener("click", function () {
-                _open = false;
-                $id("skbg-panel").classList.remove("open");
+                setPanelOpen(false);
             });
 
             // Tab 切换（事件委托）
