@@ -128,7 +128,7 @@ sessionStorage（刷新后失效）
 
 ## 版本历史 / Changelog
 
-### v3.1.0 (2024)
+### v3.0.0 (2026)
 - 新增作者栏（B站 + GitHub 链接，带 favicon）
 - 默认图库从 4 张扩展至 **6 张**
 - 深度性能优化：DocumentFragment 批量 DOM 插入、单例 IndexedDB 连接、图片排序修复
@@ -141,16 +141,6 @@ sessionStorage（刷新后失效）
 - 8MB+ 图片上传友好提示
 - `@grant GM_addStyle` 优化样式注入
 - 完整 ARIA 无障碍属性
-
-### v3.0.0 (2024)
-- 完整架构重构：4个独立模块（RemoteGalleryProvider / StorageModule / BackgroundModule / UIModule）
-- 全新侧边抽屉 UI，玻璃拟态风格
-- 拖拽上传支持
-- Toast 通知替代 `alert`
-- 预留远程图库接口
-
-### v1.x (2023)
-- 初版发布，基础背景切换功能
 
 ---
 
