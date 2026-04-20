@@ -3,7 +3,7 @@
 > 声明：代码根据二代脚本修改，v3代码由Claude sonnet 4.6生成
 > 
 <p align="center">
-  <img src="http://github.smiku.site/sakura.png" width="80" alt="SakuraBG Logo">
+  <img src="https://pic.syjx.space:30443/i/2026/04/20/69e62fadd1529.png" width="80" alt="SakuraBG Logo">
 </p>
 
 <p align="center">

@@ -4,12 +4,12 @@
 // @description  AB站背景更改油猴脚本第三代，重构架构，优化UI/性能/兼容性，支持远程图库接口。
 // @icon         http://github.smiku.site/sakura.png
 // @license      MIT
-// @version      3.0.1
+// @version      3.0.2
 // @author       SakuraMikku
 // @copyright    2023-2099, SakuraMikku
 // @bilibili     https://space.bilibili.com/29058270
 // @github       https://github.com/wuxinTLH
-// @updateURL    https://github.com/wuxinTLH/abBackgroundScript/raw/main/abBackgroundScript.js
+// @updateURL    https://github.com/wuxinTLH/abBackgroundScript-v3/blob/master/abBackgroundScript%20v3.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // @match        *www.bilibili.com/*
