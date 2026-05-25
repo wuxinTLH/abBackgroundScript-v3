@@ -9,6 +9,7 @@
 // @copyright    2023-2099, SakuraMikku
 // @bilibili     https://space.bilibili.com/29058270
 // @github       https://github.com/wuxinTLH
+// @updateURL    https://github.com/wuxinTLH/abBackgroundScript-v3/blob/master/abBackgroundScript%20v3.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // @match        *www.bilibili.com/*
